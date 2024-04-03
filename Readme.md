@@ -15,4 +15,4 @@ This project contains the code for a basic client/server for both the HTTP and T
 #### HTTP client
  - Type ```make HTTPclient``` in the shell
  - run ```HTTPclient``` with one argument passed in (the IP address of the page you want to make a request to).
-    - ex: ./run [I.P. address here]
+    - ex: ./HTTPclient [I.P. address here]
