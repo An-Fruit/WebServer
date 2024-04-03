@@ -6,7 +6,8 @@
 
 #include <netinet/in.h>     //some structs needed from here to store address info
 
-#define PORT 9001           
+#define PORT 9001
+#define INPUT_BUFFER_LEN 256           
 
 int main(int argc, char *argv[]){
 
@@ -22,8 +23,18 @@ int main(int argc, char *argv[]){
     int connect_stat = connect(socket_descriptor, (struct sockaddr *) &server_address, sizeof(server_address));        //connect to the server socket
     if(connect_stat == -1){
         fprintf(stderr, "CONNECTION TO ADDRESS FAILED\nPORT = %d\nSERVER ADDRESS = %d\n", PORT, INADDR_ANY);
+        return -1;
     }
+
+    //receive information from server and put it into a buffer
+    char server_response[INPUT_BUFFER_LEN];
+    recv(socket_descriptor, server_response, sizeof(server_response), 0);
+
+    //print out server response
+    printf("SERVER RESPONSE:\n%s\n", server_response);
     
+    //close socket
+    close(socket_descriptor);
 
     return 0;
 }
