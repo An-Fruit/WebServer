@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]){
 
     //create socket
-    int socket_descriptor = socket(AF_INET, SOCK_STREAM, 0);       //address family = internet, socket type = stream, protocol = 0 (TCP)
+    int client_socket = socket(AF_INET, SOCK_STREAM, 0);       //address family = internet, socket type = stream, protocol = 0 (TCP)
 
     //specify socket address
     struct sockaddr_in server_address;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
     server_address.sin_port = htons(PORT);          //set server port
     server_address.sin_addr.s_addr = INADDR_ANY;    //set server address
 
-    int connect_stat = connect(socket_descriptor, (struct sockaddr *) &server_address, sizeof(server_address));        //connect to the server socket
+    int connect_stat = connect(client_socket, (struct sockaddr *) &server_address, sizeof(server_address));        //connect to the server socket
     if(connect_stat == -1){
         fprintf(stderr, "CONNECTION TO ADDRESS FAILED\nPORT = %d\nSERVER ADDRESS = %d\n", PORT, INADDR_ANY);
         return -1;
@@ -28,13 +28,13 @@ int main(int argc, char *argv[]){
 
     //receive information from server and put it into a buffer
     char server_response[INPUT_BUFFER_LEN];
-    recv(socket_descriptor, server_response, sizeof(server_response), 0);
+    recv(client_socket, server_response, sizeof(server_response), 0);
 
     //print out server response
     printf("SERVER RESPONSE:\n%s\n", server_response);
     
     //close socket
-    close(socket_descriptor);
+    close(client_socket);
 
     return 0;
 }
