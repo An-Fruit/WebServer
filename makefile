@@ -1,19 +1,27 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-all: webserverTCP webclientTCP
+all: TCP HTTP
 
-webclientTCP: client
-	$(CC) $(CFLAGS) -o $@ client.o
+TCP: TCPserver TCPclient
 
-webserverTCP: server 
-	$(CC) $(CFLAGS) -o $@ server.o
+TCPserver: TCPserver.c
+	$(CC) $(CFLAGS) -c $< -o TCPserver.o
+	$(CC) $(CFLAGS) -o $@ TCPserver.o
 
-server: server.c
-	$(CC) $(CFLAGS) -c $< -o server.o
+TCPclient: TCPclient.c
+	$(CC) $(CFLAGS) -c $< -o TCPclient.o
+	$(CC) $(CFLAGS) -o $@ TCPclient.o
 
-client: client.c
-	$(CC) $(CFLAGS) -c $< -o client.o
+HTTP: HTTPserver HTTPclient
+
+HTTPserver: HTTPserver.c
+	$(CC) $(CFLAGS) -c $< -o HTTPserver.o
+	$(CC) $(CFLAGS) -o $@ HTTPserver.o
+
+HTTPclient: HTTPclient.c
+	$(CC) $(CFLAGS) -c $< -o HTTPclient.o
+	$(CC) $(CFLAGS) -o $@ HTTPclient.o
 
 clean:
-	rm -f webserverTCP webclientTCP *.o
+	rm -f TCPserver TCPclient HTTPserver HTTPclient *.o
