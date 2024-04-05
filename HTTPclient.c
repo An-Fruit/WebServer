@@ -7,8 +7,7 @@
 #include <netinet/in.h>
 
 #include <arpa/inet.h>      //contains func for converting network addresses
-#define PORT 80
-#define RESPONSE_SIZE 4096
+#define HTTP_PORT 80
 int main(int argc, char **argv){
 
     //grab address from args
@@ -19,14 +18,14 @@ int main(int argc, char **argv){
     //define server address
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(PORT);
-    inet_aton(address, &server_address.sin_addr.s_addr); //store converted address to correct place
+    server_address.sin_port = htons(HTTP_PORT);
+    inet_aton(address, &server_address.sin_addr.s_addr); //convert address string to an actual number
 
     //connect to server
     connect(client_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 
-    char request[] = "GET / HTTP/1.1\r\n\r\n";    //make a get request to root using HTML 1.1
-    char response[RESPONSE_SIZE];
+    char request[] = "GET / HTTP/1.1\r\n\r\nFrom: someuser@gmail.com\nUser-Agent: TestHTTPClient/1.0";    //make a get request to root using HTML 1.1
+    char response[4096];
 
     //send the request
     send(client_socket, request, sizeof(request), 0);
